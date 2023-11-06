@@ -33,23 +33,26 @@ env = make_vec_env(
 # Expert is a pre-trained model loaded from HuggingFace
 # if we wanted to train our own expert, we could use Q-learning like in our previous checkpoint
 # we will use this to generate expert trajectories
+"""
 expert = load_policy(
     "ppo-huggingface",
     env_name="seals:seals/MountainCar-v0",
     venv=env,
 )
-
+"""
 from imitation.data import rollout
 
 # rollouts is a list of generated trajectories from the expert policy with the given environment
 # these are the expert demonstrations that we will use for inverse reinforcement learning
 # this forms the "expert trajectories" part of the input to GAIL
+"""
 rollouts = rollout.rollout(
     expert,
     env,
     rollout.make_sample_until(min_timesteps=None, min_episodes=60),
     rng=np.random.default_rng(SEED),
 )
+"""
 
 from imitation.algorithms.adversarial.gail import GAIL
 from imitation.rewards.reward_nets import BasicRewardNet
@@ -82,6 +85,11 @@ reward_net = BasicRewardNet(
     action_space=env.action_space,
     normalize_input_layer=RunningNorm,
 )
+
+import pickle
+
+with open("continuous", "rb") as t:
+    rollouts = pickle.load(t)
 
 # Imitation implementation of GAIL 
 gail_trainer = GAIL(
