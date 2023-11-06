@@ -15,17 +15,16 @@ def add_variance(state, env):
         temp[1] = 0
     return np.round(temp, 0).astype(int)
 
-# Observational Ambiguity - add variance to state for each state-action pair with probability p 
+# Observational ambiguity - add variance to state for each state-action pair with probability p 
 def observation_ambiguity(trajectory, env, p_suboptimal):
     for i in range(len(trajectory)):
         if random.random() < p_suboptimal:
                 t = trajectory[i]
-                state = add_variance(t, env)
+                state = add_variance(t[0], env)
                 lst = list(t)
                 lst[0] = state
                 trajectory[i] = tuple(lst)
     return trajectory
-
 
 # Action ambiguity - randomly change action for each state-action pair with probability p
 def action_ambiguity(trajectory, env, p_suboptimal):
@@ -39,14 +38,23 @@ def action_ambiguity(trajectory, env, p_suboptimal):
 
 # Static occlusion - remove all instances of target states
 def static_occlusion(trajectory, target_states):
-    for t in trajectory:
-        if t[0] in target_states:
-            trajectory.remove(t)
+    remove = []
+    for i in range(len(trajectory)):
+        t = trajectory[i]
+        state = tuple(t[0])
+        for s in target_states:
+            if state == s:
+                remove.append(i)
+    for i in range(len(remove)):
+        trajectory.pop(remove[i] - i)
     return trajectory
 
 # Dynamic occlusion - remove each state-action pair with probability p
 def dynamic_occlusion(trajectory, p_suboptimal):
-    for t in trajectory:
+    remove = []
+    for i in range(len(trajectory)):
         if random.random() < p_suboptimal:
-            trajectory.remove(t)
+            remove.append(i)
+    for i in range(len(remove)):
+        trajectory.pop(remove[i] - i)
     return trajectory
