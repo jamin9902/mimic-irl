@@ -11,21 +11,19 @@ import pandas as pd
 NUM_STATES = 285
 NUM_ACTIONS = 3
 
-# Read trajectories from CSV
-def read_trajectories_csv(filename):
-    trajectories_df = pd.read_csv(filename)
+# Converts position-velocity trajectories to linear state space
+def convert_trajectories(trajectories):
     states = []
     actions = []
-    for index, row in trajectories_df.iterrows():
-        position = int(row['position'])
-        velocity = int(row['velocity'])
-        action = int(row['action'])
-        state_number = (position * 15) + velocity
-        states.append(state_number)
-        actions.append(action)
+    for traj in trajectories:
+        for t in traj:
+            position = t[0][0]
+            velocity = t[0][1]
+            action = t[1]
+            state_number = (position * 15) + velocity
+            states.append(state_number)
+            actions.append(action)
     return (states, actions)
-
-#  = read_trajectories_csv('QA_suboptimal.csv')
 
 # One-hot encoders for state and action space
 state_encoder = OneHotEncoder(sparse=False, categories= [np.arange(NUM_STATES)])
