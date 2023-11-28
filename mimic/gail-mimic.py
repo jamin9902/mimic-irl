@@ -66,3 +66,6 @@ gail_trainer = GAIL(
 )
 
 gail_trainer.train(800_000)
+
+#extract policy
+policy = [learner.predict(i,deterministic=True).item() for i in range(100)]
