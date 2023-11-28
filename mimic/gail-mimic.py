@@ -56,7 +56,7 @@ reward_net = BasicRewardNet(
 
 # imitation implementation of GAIL 
 gail_trainer = GAIL(
-    demonstrations=rollouts[:64],
+    demonstrations=rollouts,
     demo_batch_size=1024,
     gen_replay_buffer_capacity=512,
     n_disc_updates_per_round=8,
