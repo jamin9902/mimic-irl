@@ -21,7 +21,7 @@ def observation_ambiguity(df, columns, std_multiplier, p_suboptimal):
 def action_ambiguity(df, p_suboptimal):
     suboptimal_df = df.copy()
     for index, _ in suboptimal_df.iterrows():
-        if random.random() > p_suboptimal:
+        if random.random() < p_suboptimal:
             suboptimal_df.loc[index, 'action'] = random.randint(0, 3)
     return suboptimal_df
 
