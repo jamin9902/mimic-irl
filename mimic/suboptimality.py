@@ -39,4 +39,4 @@ def dynamic_occlusion(df, p_suboptimal):
     num_drop = round(p_suboptimal * len(indices))
     drop_indices = np.random.choice(indices, num_drop, replace=False)
     suboptimal_df = suboptimal_df.drop(drop_indices)
-
+    return suboptimal_df
