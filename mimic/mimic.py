@@ -31,11 +31,14 @@ import gymnasium as gym
 from gymnasium import spaces
 import pickle
 
-with open("transition_mat","rb") as f:
+with open("p_transition","rb") as f:
     transition_tensor = pickle.load(f)
-
+    
 transition_probs = {(i,j):[transition_tensor[i,k,j] for k in range(100)] for i in range(100) for j in range(4)}
-cluster_counts = [7463, 3689, 3727, 4829, 4525, 567, 3048, 7378, 1336, 1141, 1838, 7975, 4901, 5601, 4412, 1631, 206, 1663, 1732, 2561, 2999, 7256, 2096, 196, 1005, 5121, 4320, 4947, 726, 17, 1157, 796, 6662, 7319, 7302, 3394, 6857, 7180, 4869, 3992, 909, 4482, 6381, 3491, 2609, 6162, 2425, 7168, 2600, 7256, 2677, 2373, 115, 2928, 1411, 6527, 1578, 1464, 6148, 120, 6927, 3205, 3068, 964, 4410, 1853, 4, 3751, 795, 1560, 3795, 8099, 559, 4054, 6251, 242, 6238, 6884, 435, 7779, 4580, 1250, 7909, 6709, 1361, 2, 192, 9484, 2958, 9705, 1903, 743, 674, 1168, 2916, 2973, 207, 2845, 4796, 4998]
+
+with open("counts",'rb') as f:
+    cluster_counts = pickle.load(f)
+    
 cluster_probs = [i/sum(cluster_counts) for i in cluster_counts]
 
 class MimicEnv(gym.Env):
