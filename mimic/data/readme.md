@@ -63,3 +63,5 @@ dynamic_p_transition
 and these data can be used as the inputs for BC, MaxEnt, and GAIL.
 
 The policies found by GAIL have been saved in gail_policies (as a plain text file).
+
+This directory also contains all the bc policies and maxent policies+rewards.
